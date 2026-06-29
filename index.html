@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Para a minha namorada ❤️</title>
+    <!-- Fonte romântica do Google -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet" />
+    <style>
+        /* ===== RESET E BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            background: #ffe0ec;
+        }
+
+        /* ===== PÁGINAS ===== */
+        .pagina {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s ease;
+        }
+
+        #inicio {
+            background: linear-gradient(145deg, #ffb6c1, #ff85a2, #ff6b8a);
+            z-index: 10;
+        }
+
+        #fotos {
+            background: linear-gradient(145deg, #ffb6c1, #ff91a4, #ff6b8a);
+            z-index: 5;
+            overflow-y: auto;
+            /* permite rolagem se muitas fotos */
+            padding: 2rem 1rem;
+            display: none;
+            /* escondida por padrão */
+            flex-direction: column;
+            justify-content: flex-start;
+            /* alinha no topo para rolagem */
+            position: relative;
+        }
+
+        #fotos.mostrar {
+            display: flex;
+        }
+
+        /* ===== PÁGINA INICIAL ===== */
+        .pergunta {
+            font-family: 'Dancing Script', cursive;
+            font-size: 4rem;
+            color: #fff;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            margin-bottom: 2rem;
+            text-align: center;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%,
+            100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.03);
+            }
+        }
+
+        .botoes {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            font-size: 2.2rem;
+            font-weight: bold;
+            padding: 1rem 3.5rem;
+            border: none;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            letter-spacing: 2px;
+            min-width: 160px;
+        }
+
+        .btn-sim {
+            background: #fff;
+            color: #d6336c;
+        }
+
+        .btn-sim:hover {
+            transform: scale(1.08);
+            box-shadow: 0 12px 35px rgba(214, 51, 108, 0.4);
+            background: #ffe0ec;
+        }
+
+        .btn-nao {
+            background: #d6336c;
+            color: #fff;
+        }
+
+        .btn-nao:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 35px rgba(214, 51, 108, 0.5);
+            background: #c01a5a;
+        }
+
+        .btn-nao.escondido {
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.8);
+            transition: opacity 0.5s, transform 0.5s;
+        }
+
+        /* ===== PÁGINA DE FOTOS ===== */
+        .container-fotos {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding-top: 20px;
+        }
+
+        .titulo-amor {
+            font-family: 'Dancing Script', cursive;
+            font-size: 8rem;
+            color: #fff;
+            text-shadow: 0 8px 40px rgba(0, 0, 0, 0.25);
+            text-align: center;
+            margin-bottom: 0.5rem;
+            letter-spacing: 6px;
+            animation: brilho 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes brilho {
+            0% {
+                text-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+            }
+            100% {
+                text-shadow: 0 0 60px rgba(255, 255, 255, 0.9), 0 0 120px rgba(255, 105, 180, 0.6);
+            }
+        }
+
+        .grid-fotos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+            padding-bottom: 2rem;
+        }
+
+        .foto-placeholder {
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(4px);
+            border: 3px dashed rgba(255, 255, 255, 0.7);
+            border-radius: 30px;
+            aspect-ratio: 1 / 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, background 0.3s;
+            cursor: default;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .foto-placeholder:hover {
+            transform: scale(1.02);
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .foto-placeholder .icone {
+            font-size: 3rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .foto-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 30px;
+        }
+
+        /* ===== CORAÇÕES FLUTUANTES ===== */
+        .coracoes-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .coracao {
+            position: absolute;
+            font-size: 2rem;
+            color: rgba(255, 255, 255, 0.7);
+            animation: flutuar linear infinite;
+            user-select: none;
+            text-shadow: 0 0 15px rgba(255, 105, 180, 0.3);
+        }
+
+        @keyframes flutuar {
+            0% {
+                transform: translateY(110vh) rotate(0deg) scale(0.6);
+                opacity: 0.2;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-10vh) rotate(720deg) scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        /* Variações de tamanho e cor para cada coração (aplicado via JS) */
+
+        /* ===== SCROLLBAR PERSONALIZADA ===== */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #ff4080;
+            border-radius: 10px;
+        }
+
+        /* ===== RESPONSIVO ===== */
+        @media (max-width: 600px) {
+            .pergunta {
+                font-size: 2.8rem;
+            }
+            .btn {
+                font-size: 1.6rem;
+                padding: 0.8rem 2rem;
+                min-width: 120px;
+            }
+            .botoes {
+                gap: 1rem;
+            }
+            .titulo-amor {
+                font-size: 4.5rem;
+            }
+            .grid-fotos {
+                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+                gap: 1rem;
+            }
+            .foto-placeholder {
+                border-radius: 20px;
+                font-size: 1rem;
+            }
+            .foto-placeholder .icone {
+                font-size: 2.2rem;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .pergunta {
+                font-size: 2.2rem;
+            }
+            .btn {
+                font-size: 1.3rem;
+                padding: 0.6rem 1.5rem;
+                min-width: 100px;
+            }
+            .titulo-amor {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== PÁGINA INICIAL ===== -->
+    <div id="inicio" class="pagina">
+        <div class="pergunta">💕 Você ama o Maycon? 💕</div>
+        <div class="botoes">
+            <button id="btnSim" class="btn btn-sim">Sim ❤️</button>
+            <button id="btnNao" class="btn btn-nao">Não 💔</button>
+        </div>
+        <div style="margin-top: 2.5rem; font-size: 1.2rem; color: rgba(255,255,255,0.7); font-weight: 300;">
+            (clique com o coração ❤️)
+        </div>
+    </div>
+
+    <!-- ===== PÁGINA DE FOTOS ===== -->
+    <div id="fotos" class="pagina">
+        <!-- Container dos corações flutuantes (fixo) -->
+        <div id="coracoesContainer" class="coracoes-container"></div>
+
+        <!-- Conteúdo principal -->
+        <div class="container-fotos">
+            <div class="titulo-amor">EU TE AMO</div>
+            <p style="text-align:center; color: rgba(255,255,255,0.85); font-size: 1.3rem; margin-top: -0.5rem; font-weight: 300; letter-spacing: 2px;">
+                ❤️ Cada foto é uma prova do nosso amor ❤️
+            </p>
+
+            <!-- Grid de fotos -->
+            <div class="grid-fotos" id="gridFotos">
+                <!-- ======================================== -->
+                <!-- COLOQUE SUAS FOTOS AQUI, SUBSTITUINDO OS  -->
+                <!-- PLACEHOLDERS PELAS SUAS IMAGENS          -->
+                <!-- ======================================== -->
+
+                <!-- EXEMPLO DE FOTO REAL (descomente e substitua o src) -->
+                <!--
+                <div class="foto-placeholder">
+                    <img src="sua-foto-1.jpg" alt="Nós dois" />
+                </div>
+                <div class="foto-placeholder">
+                    <img src="sua-foto-2.jpg" alt="Nós dois" />
+                </div>
+                -->
+
+                <!-- Placeholders (substitua pelos <img> acima) -->
+                <div class="foto-placeholder">
+                    <img src="foto1.jpg.jpeg" alt="Nós dois" />
+                    Adicione sua foto
+                </div>
+                <div class="foto-placeholder">
+                    <img src="foto2.jpg.jpeg" alt="Nós dois" />
+                    Adicione sua foto
+                </div>
+                <div class="foto-placeholder">
+                    <img src="foto3.jpg.jpeg" alt="Nós dois" />
+                    Adicione sua foto
+                </div>
+                <div class="foto-placeholder">
+                    <img src="foto4.jpg.jpeg" alt="Nós dois" />
+                    Adicione sua foto
+                </div>
+                <div class="foto-placeholder">
+                    <img src="foto5.jpg.jpeg" alt="Nós dois" />
+                    Adicione sua foto
+                </div>
+                <div class="foto-placeholder">
+                    <img src="foto6.jpg.jpeg" alt="Nós dois" />
+                    Adicione sua foto
+                </div>
+                <!-- Adicione quantos quiser, a grade se ajusta -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        //  INTERAÇÃO DA PÁGINA INICIAL
+        // ==========================================
+
+        const btnSim = document.getElementById('btnSim');
+        const btnNao = document.getElementById('btnNao');
+        const paginaInicio = document.getElementById('inicio');
+        const paginaFotos = document.getElementById('fotos');
+
+        // Botão "Não" desaparece
+        btnNao.addEventListener('click', function() {
+            this.classList.add('escondido');
+        });
+
+        // Botão "Sim" leva para a página de fotos
+        btnSim.addEventListener('click', function() {
+            // Esconde a página inicial com fade
+            paginaInicio.style.opacity = '0';
+            setTimeout(() => {
+                paginaInicio.style.display = 'none';
+            }, 800);
+
+            // Mostra a página de fotos
+            paginaFotos.classList.add('mostrar');
+            paginaFotos.style.opacity = '0';
+            // Força reflow para a transição
+            void paginaFotos.offsetWidth;
+            paginaFotos.style.opacity = '1';
+            paginaFotos.style.transition = 'opacity 0.8s ease';
+
+            // Gera os corações (se ainda não foram gerados)
+            if (!window.coracoesGerados) {
+                gerarCoracoes();
+                window.coracoesGerados = true;
+            }
+        });
+
+        // ==========================================
+        //  CORAÇÕES FLUTUANTES
+        // ==========================================
+
+        function gerarCoracoes() {
+            const container = document.getElementById('coracoesContainer');
+            const quantidade = 40;
+            const simbolos = ['♥', '❤', '💕', '💖', '💗', '💓', '💘', '💝'];
+
+            for (let i = 0; i < quantidade; i++) {
+                const coracao = document.createElement('div');
+                coracao.className = 'coracao';
+                coracao.textContent = simbolos[Math.floor(Math.random() * simbolos.length)];
+
+                // Tamanho aleatório entre 1.2rem e 4rem
+                const tamanho = 1.2 + Math.random() * 2.8;
+                coracao.style.fontSize = tamanho + 'rem';
+
+                // Posição horizontal aleatória
+                coracao.style.left = Math.random() * 100 + '%';
+
+                // Duração da animação entre 8s e 18s
+                const duracao = 8 + Math.random() * 10;
+                coracao.style.animationDuration = duracao + 's';
+
+                // Atraso aleatório
+                coracao.style.animationDelay = Math.random() * 12 + 's';
+
+                // Opacidade e cor variadas
+                const opacidade = 0.4 + Math.random() * 0.5;
+                coracao.style.opacity = opacidade;
+
+                // Tons de rosa / branco
+                const tons = [
+                    'rgba(255,255,255,0.8)',
+                    'rgba(255,182,193,0.9)',
+                    'rgba(255,105,180,0.8)',
+                    'rgba(255,20,147,0.7)',
+                    'rgba(255,240,245,0.9)',
+                ];
+                coracao.style.color = tons[Math.floor(Math.random() * tons.length)];
+
+                // Sombra suave
+                coracao.style.textShadow = '0 0 20px rgba(255,105,180,0.3)';
+
+                container.appendChild(coracao);
+            }
+        }
+
+        // ==========================================
+        //  PEQUENO DETALHE: se a página for recarregada
+        //  e a página de fotos estiver visível (caso raro)
+        // ==========================================
+
+        // Inicia normalmente com a página inicial visível.
+        // Se por acaso quiser manter o estado, mas não é necessário.
+    </script>
+
+</body>
+</html>
