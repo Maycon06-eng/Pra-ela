@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Para a minha namorada ❤️</title>
-    <!-- Fonte romântica do Google -->
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet" />
     <style>
         /* ===== RESET E BASE ===== */
@@ -44,13 +43,10 @@
             background: linear-gradient(145deg, #ffb6c1, #ff91a4, #ff6b8a);
             z-index: 5;
             overflow-y: auto;
-            /* permite rolagem se muitas fotos */
             padding: 2rem 1rem;
             display: none;
-            /* escondida por padrão */
             flex-direction: column;
             justify-content: flex-start;
-            /* alinha no topo para rolagem */
             position: relative;
         }
 
@@ -84,6 +80,8 @@
             gap: 2rem;
             flex-wrap: wrap;
             justify-content: center;
+            align-items: center;
+            min-height: 100px;
         }
 
         .btn {
@@ -128,12 +126,27 @@
             transition: opacity 0.5s, transform 0.5s;
         }
 
+        /* Mensagem "me deve 1 beijo" */
+        .msg-beijo {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3rem;
+            color: #fff;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.8);
+            animation: pulse 1s ease-in-out infinite alternate;
+            display: none;
+            /* começa escondido */;
+        }
+
+        .msg-beijo.mostrar {
+            display: block;
+        }
+
         /* ===== PÁGINA DE FOTOS ===== */
         .container-fotos {
             position: relative;
             z-index: 2;
             width: 100%;
-            max-width: 1100px;
+            max-width: 800px;
             margin: 0 auto;
             padding-top: 20px;
         }
@@ -158,49 +171,46 @@
             }
         }
 
-        .grid-fotos {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-            padding-bottom: 2rem;
-        }
-
-        .foto-placeholder {
-            background: rgba(255, 255, 255, 0.3);
-            backdrop-filter: blur(4px);
-            border: 3px dashed rgba(255, 255, 255, 0.7);
-            border-radius: 30px;
-            aspect-ratio: 1 / 1;
+        .lista-fotos {
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            color: #fff;
-            font-size: 1.2rem;
-            font-weight: 600;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s, background 0.3s;
-            cursor: default;
-            padding: 1rem;
+            gap: 2.5rem;
+            margin-top: 2rem;
+            padding-bottom: 3rem;
+        }
+
+        .item-foto {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(6px);
+            border-radius: 30px;
+            padding: 1.5rem 1.5rem 1rem 1.5rem;
+            width: 100%;
+            max-width: 650px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
             text-align: center;
         }
 
-        .foto-placeholder:hover {
+        .item-foto:hover {
             transform: scale(1.02);
-            background: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15);
         }
 
-        .foto-placeholder .icone {
-            font-size: 3rem;
-            margin-bottom: 0.3rem;
-        }
-
-        .foto-placeholder img {
+        .item-foto img {
             width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 30px;
+            height: auto;
+            border-radius: 20px;
+            display: block;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .legenda {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.8rem;
+            color: #fff;
+            margin-top: 0.8rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
         }
 
         /* ===== CORAÇÕES FLUTUANTES ===== */
@@ -241,9 +251,7 @@
             }
         }
 
-        /* Variações de tamanho e cor para cada coração (aplicado via JS) */
-
-        /* ===== SCROLLBAR PERSONALIZADA ===== */
+        /* ===== SCROLLBAR ===== */
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -272,16 +280,15 @@
             .titulo-amor {
                 font-size: 4.5rem;
             }
-            .grid-fotos {
-                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-                gap: 1rem;
-            }
-            .foto-placeholder {
-                border-radius: 20px;
-                font-size: 1rem;
-            }
-            .foto-placeholder .icone {
+            .msg-beijo {
                 font-size: 2.2rem;
+            }
+            .item-foto {
+                padding: 1rem;
+                max-width: 100%;
+            }
+            .legenda {
+                font-size: 1.4rem;
             }
         }
 
@@ -297,6 +304,9 @@
             .titulo-amor {
                 font-size: 3.5rem;
             }
+            .msg-beijo {
+                font-size: 1.8rem;
+            }
         }
     </style>
 </head>
@@ -307,6 +317,7 @@
         <div class="pergunta">💕 Você ama o Maycon? 💕</div>
         <div class="botoes">
             <button id="btnSim" class="btn btn-sim">Sim ❤️</button>
+            <span id="msgBeijo" class="msg-beijo">me deve 1 beijo 💋</span>
             <button id="btnNao" class="btn btn-nao">Não 💔</button>
         </div>
         <div style="margin-top: 2.5rem; font-size: 1.2rem; color: rgba(255,255,255,0.7); font-weight: 300;">
@@ -316,86 +327,72 @@
 
     <!-- ===== PÁGINA DE FOTOS ===== -->
     <div id="fotos" class="pagina">
-        <!-- Container dos corações flutuantes (fixo) -->
         <div id="coracoesContainer" class="coracoes-container"></div>
 
-        <!-- Conteúdo principal -->
         <div class="container-fotos">
             <div class="titulo-amor">EU TE AMO</div>
             <p style="text-align:center; color: rgba(255,255,255,0.85); font-size: 1.3rem; margin-top: -0.5rem; font-weight: 300; letter-spacing: 2px;">
-                ❤️ Cada foto é uma prova do nosso amor ❤️
+                ❤️ Cada momento ao seu lado é único ❤️
             </p>
 
-            <!-- Grid de fotos -->
-            <div class="grid-fotos" id="gridFotos">
-                <!-- ======================================== -->
-                <!-- COLOQUE SUAS FOTOS AQUI, SUBSTITUINDO OS  -->
-                <!-- PLACEHOLDERS PELAS SUAS IMAGENS          -->
-                <!-- ======================================== -->
+            <div class="lista-fotos" id="listaFotos">
+                <!-- ================================================= -->
+                <!-- SUAS FOTOS COM LEGENDAS (troque as frases aqui)   -->
+                <!-- ================================================= -->
 
-                <!-- EXEMPLO DE FOTO REAL (descomente e substitua o src) -->
-                <!--
-                <div class="foto-placeholder">
-                    <img src="sua-foto-1.jpg" alt="Nós dois" />
-                </div>
-                <div class="foto-placeholder">
-                    <img src="sua-foto-2.jpg" alt="Nós dois" />
-                </div>
-                -->
-
-                <!-- Placeholders (substitua pelos <img> acima) -->
-                <div class="foto-placeholder">
+                <div class="item-foto">
                     <img src="foto1.jpg.jpeg" alt="Nós dois" />
-                    
+                    <div class="legenda">Você é o amor da minha vida ❤️</div>
                 </div>
-                <div class="foto-placeholder">
+                <div class="item-foto">
                     <img src="foto2.jpg.jpeg" alt="Nós dois" />
-                   
+                    <div class="legenda">Cada dia ao seu lado é especial 💕</div>
                 </div>
-                <div class="foto-placeholder">
+                <div class="item-foto">
                     <img src="foto3.jpg.jpeg" alt="Nós dois" />
-                    
+                    <div class="legenda">Seu sorriso ilumina meu mundo ✨</div>
                 </div>
-                <div class="foto-placeholder">
+                <div class="item-foto">
                     <img src="foto4.jpg.jpeg" alt="Nós dois" />
-                    
+                    <div class="legenda">Amo você mais que tudo 🌹</div>
                 </div>
-                <div class="foto-placeholder">
+                <div class="item-foto">
                     <img src="foto5.jpg.jpeg" alt="Nós dois" />
-                    
+                    <div class="legenda">Meu coração bate forte por você 💓</div>
                 </div>
-                <div class="foto-placeholder">
+                <div class="item-foto">
                     <img src="foto6.jpg.jpeg" alt="Nós dois" />
-                    
+                    <div class="legenda">Você é meu sonho realizado 🌟</div>
                 </div>
-                <div class="foto-placeholder">
+                <div class="item-foto">
                     <img src="foto7.jpg.jpeg" alt="Nós dois" />
-                    
+                    <div class="legenda">Te quero para sempre ao meu lado 💞</div>
                 </div>
-                 <div class="foto-placeholder">
+                <div class="item-foto">
                     <img src="foto8.jpg.jpeg" alt="Nós dois" />
-                    
+                    <div class="legenda">Amar você é a melhor parte do meu dia ☀️</div>
                 </div>
-                 <div class="foto-placeholder">
+                <div class="item-foto">
                     <img src="foto9.jpg.jpeg" alt="Nós dois" />
-            
+                    <div class="legenda">Meu amor por você não tem fim 💖</div>
                 </div>
-                 <div class="foto-placeholder">
+                <div class="item-foto">
                     <img src="foto10.jpg.jpeg" alt="Nós dois" />
-                
+                    <div class="legenda">Você é minha alma gêmea, minha paz 💗</div>
                 </div>
-                <!-- Adicione quantos quiser, a grade se ajusta -->
+                <!-- Adicione mais quantas quiser, seguindo o mesmo padrão -->
             </div>
         </div>
     </div>
 
     <script>
         // ==========================================
-        //  INTERAÇÃO DA PÁGINA INICIAL
+        //  INTERAÇÕES
         // ==========================================
 
         const btnSim = document.getElementById('btnSim');
         const btnNao = document.getElementById('btnNao');
+        const msgBeijo = document.getElementById('msgBeijo');
         const paginaInicio = document.getElementById('inicio');
         const paginaFotos = document.getElementById('fotos');
 
@@ -404,27 +401,32 @@
             this.classList.add('escondido');
         });
 
-        // Botão "Sim" leva para a página de fotos
+        // Botão "Sim" – mostra "me deve 1 beijo" e depois vai para fotos
         btnSim.addEventListener('click', function() {
-            // Esconde a página inicial com fade
-            paginaInicio.style.opacity = '0';
+            // Esconde o botão "Sim"
+            this.style.display = 'none';
+            // Mostra a mensagem de beijo
+            msgBeijo.classList.add('mostrar');
+
+            // Após 2 segundos, transição para a página de fotos
             setTimeout(() => {
-                paginaInicio.style.display = 'none';
-            }, 800);
+                paginaInicio.style.opacity = '0';
+                setTimeout(() => {
+                    paginaInicio.style.display = 'none';
+                }, 800);
 
-            // Mostra a página de fotos
-            paginaFotos.classList.add('mostrar');
-            paginaFotos.style.opacity = '0';
-            // Força reflow para a transição
-            void paginaFotos.offsetWidth;
-            paginaFotos.style.opacity = '1';
-            paginaFotos.style.transition = 'opacity 0.8s ease';
+                paginaFotos.classList.add('mostrar');
+                paginaFotos.style.opacity = '0';
+                void paginaFotos.offsetWidth;
+                paginaFotos.style.opacity = '1';
+                paginaFotos.style.transition = 'opacity 0.8s ease';
 
-            // Gera os corações (se ainda não foram gerados)
-            if (!window.coracoesGerados) {
-                gerarCoracoes();
-                window.coracoesGerados = true;
-            }
+                // Gera corações (uma única vez)
+                if (!window.coracoesGerados) {
+                    gerarCoracoes();
+                    window.coracoesGerados = true;
+                }
+            }, 2000);
         });
 
         // ==========================================
@@ -433,7 +435,7 @@
 
         function gerarCoracoes() {
             const container = document.getElementById('coracoesContainer');
-            const quantidade = 40;
+            const quantidade = 45;
             const simbolos = ['♥', '❤', '💕', '💖', '💗', '💓', '💘', '💝'];
 
             for (let i = 0; i < quantidade; i++) {
@@ -441,25 +443,15 @@
                 coracao.className = 'coracao';
                 coracao.textContent = simbolos[Math.floor(Math.random() * simbolos.length)];
 
-                // Tamanho aleatório entre 1.2rem e 4rem
                 const tamanho = 1.2 + Math.random() * 2.8;
                 coracao.style.fontSize = tamanho + 'rem';
-
-                // Posição horizontal aleatória
                 coracao.style.left = Math.random() * 100 + '%';
-
-                // Duração da animação entre 8s e 18s
                 const duracao = 8 + Math.random() * 10;
                 coracao.style.animationDuration = duracao + 's';
-
-                // Atraso aleatório
                 coracao.style.animationDelay = Math.random() * 12 + 's';
-
-                // Opacidade e cor variadas
                 const opacidade = 0.4 + Math.random() * 0.5;
                 coracao.style.opacity = opacidade;
 
-                // Tons de rosa / branco
                 const tons = [
                     'rgba(255,255,255,0.8)',
                     'rgba(255,182,193,0.9)',
@@ -468,22 +460,11 @@
                     'rgba(255,240,245,0.9)',
                 ];
                 coracao.style.color = tons[Math.floor(Math.random() * tons.length)];
-
-                // Sombra suave
                 coracao.style.textShadow = '0 0 20px rgba(255,105,180,0.3)';
 
                 container.appendChild(coracao);
             }
         }
-
-        // ==========================================
-        //  PEQUENO DETALHE: se a página for recarregada
-        //  e a página de fotos estiver visível (caso raro)
-        // ==========================================
-
-        // Inicia normalmente com a página inicial visível.
-        // Se por acaso quiser manter o estado, mas não é necessário.
     </script>
-
 </body>
 </html>
